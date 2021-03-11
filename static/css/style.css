@@ -1,0 +1,304 @@
+        html {
+            background-color: #010825;
+        }
+        
+        body {
+            color: #ffffff;
+            font-family: roboto, Arial, Microsoft YaHei, Helvetica, sans-serif !important;
+            font-size: 14px;
+            background: #010825;
+        }
+        
+        .page {
+            background: #010825;
+            /* background-image: linear-gradient(page #010825, #fff); */
+            width: 100%;
+            min-height: 1080px;
+            height: 1080px;
+            background-size: 100%;
+        }
+        
+        .head {
+            background: url(./../img/images/header.png) #010825 no-repeat 0 0;
+            width: 100% !important;
+            height: 150px;
+            background-size: 100%;
+        }
+        
+        .ant-layout,
+        .ant-layout-content {
+            background: url(./../img/images/loginBg.jpg) no-repeat 0 0 !important;
+            width: 100% !important;
+            height: 1080px;
+            background-size: 100%;
+        }
+        
+        .stopTrainBtn {
+            position: absolute !important;
+            top: 2.5em;
+            right: 10.5em;
+            display: block;
+            width: 8%;
+            height: 50px !important;
+            line-height: 70px;
+            font-size: 17px !important;
+            text-align: center;
+            color: #87e7ff !important;
+            background-image: linear-gradient(#12193b, #13488b) !important;
+            border: 1px solid #13488b !important;
+            text-shadow: 0 0 28px #0064ff;
+        }
+        
+        .reportBtn {
+            position: absolute !important;
+            top: 2.5em;
+            right: 0.5em;
+            display: block;
+            width: 8%;
+            height: 50px !important;
+            line-height: 70px;
+            font-size: 17px !important;
+            text-align: center;
+            color: #87e7ff !important;
+            background-image: linear-gradient(#12193b, #13488b) !important;
+            border: 1px solid #13488b !important;
+            text-shadow: 0 0 28px #0064ff;
+        }
+        
+        .reportBtn:disabled {
+            background-image: linear-gradient(#12193b, #13488b) !important;
+        }
+        
+        .reportBtn:disabled:hover,
+        .reportBtn:hover {
+            background-image: linear-gradient(#12193b, #13488b) !important;
+        }
+        
+        .reportBtn:hover,
+        .stopTrainBtn:hover {
+            background-image: linear-gradient(#0d479e, #29ccdf) !important;
+        }
+        
+        .rowBox {
+            position: absolute;
+            top: 0;
+            z-index: 999;
+            margin: 0 !important;
+            box-sizing: border-box;
+        }
+        
+        .ant-col {
+            text-align: center;
+        }
+        
+        .colBox {
+            height: 30em !important;
+        }
+        
+        .loginList {
+            width: 85%;
+            margin: 0 auto;
+            display: flex;
+        }
+        
+        .selectName,
+        .ant-modal-title {
+            text-align: center;
+        }
+        
+        .video {
+            background: url(./../img/images/video-bg.png) no-repeat 0 0;
+            width: 31% !important;
+            /* height: 444px !important; */
+            background-size: 100%;
+            text-align: center;
+        }
+        
+        .video img {
+            width: 100%;
+            height: auto;
+            padding: 2em;
+        }
+        
+        .front {
+            background: url(./../img/images/front-bg.png) no-repeat 0 0;
+            width: 67% !important;
+            background-size: 100%;
+        }
+        
+        .front .frontWrap {
+            width: 100%;
+            margin: 14% auto 6% auto;
+        }
+        
+        .dec {
+            font-size: 24px;
+            color: #1e95ff;
+            /* padding-bottom: -0.5em; */
+        }
+        
+        .dec p {
+            margin-bottom: 0 !important;
+            font-size: 22px !important;
+        }
+        
+        .dec p:nth-child(1) {
+            font-size: 28px !important;
+        }
+        
+        .back {
+            background: url(./../img/images/back-bg.png) no-repeat 0 0;
+            width: 67% !important;
+            background-size: 100%;
+        }
+        
+        .back .backWrap {
+            width: 100%;
+            margin: 14% auto;
+        }
+        
+        .speed {
+            background: url(./../img/images/speed-bg.png) no-repeat 0 0;
+            width: 31% !important;
+            height: 444px !important;
+            background-size: 100%;
+        }
+        
+        .speed .speedNum {
+            font-size: 36px;
+            color: red;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .speed .zqwdx {
+            align-content: center;
+            margin-top: 27%;
+        }
+        
+        .speed .dzwcsj,
+        .speed .dzzlpgcj {
+            margin-bottom: 10%;
+        }
+        
+        .speedNum span {
+            padding: 0 14%;
+        }
+        
+        .loading img {
+            position: absolute;
+            left: 50%;
+            -webkit-transform: translate(-50%, -50%);
+            -moz-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
+            top: 40%;
+            z-index: 99;
+        }
+        
+        .progress .loadText,
+        .loading .loadText {
+            width: 15%;
+            top: 74%;
+        }
+        
+        .mask {
+            position: absolute;
+            top: 0;
+            left: 0;
+            -webkit-animation-timing-function: ease-in-out;
+            /* -webkit-animation-name: breathe;
+            -webkit-animation-duration: 1000ms;
+            -webkit-animation-iteration-count: 2; */
+            -webkit-animation-direction: alternate;
+            opacity: 1;
+        }
+        
+        .maskBox {
+            min-height: 212px !important;
+        }
+        
+        .maskAll {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #010827;
+            color: #fff;
+            z-index: 98;
+        }
+        
+        .cardBox {
+            /* background: linear-gradient(#0295a3, #1a3d7c); */
+            padding: 15px !important;
+            width: auto !important;
+        }
+        
+        .cardBox img {
+            transition: all .6s;
+            -moz-transition: all .6s;
+            -webkit-transition: all .6s;
+            -o-transition: all .6s;
+        }
+        
+        .cardBox img:hover {
+            transform: scale(1.3);
+            box-shadow: 3px 4px 8px 7px rgba(30, 14, 121, 0.2);
+            margin-bottom: 1em;
+        }
+        
+        .ant-card-bordered {
+            border: none!important;
+        }
+        
+        .loginName {
+            text-align: left;
+            font-size: 20px;
+            color: #fff;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1em 0;
+        }
+        
+        .nameSpell {
+            font-size: 16px !important;
+        }
+        
+        .ant-pagination {
+            width: 100%;
+            text-align: center;
+        }
+        /* @-webkit-keyframes breathe {
+            0% {
+                opacity: 0;
+            }
+            100% {
+                opacity: 1;
+            }
+        } */
+        
+        .maskBox {
+            display: flex !important;
+            justify-content: center !important;
+            flex-wrap: wrap !important;
+        }
+        
+        .ant-modal {
+            width: 80% !important;
+        }
+        
+        .ant-col-24 {
+            width: auto !important;
+        }
+        
+        .ant-page-header-heading-title {
+            color: #fff !important;
+        }
+        
+        @media screen and (max-width: 1600px) {
+            .speed .speedNum {
+                font-size: 30px;
+            }
+        }
