@@ -1,0 +1,124 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>人工智能赛艇生物力学动作捕捉分析系统</title>
+    <!-- 最新版本的 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="./css//bootstrap.min.css">
+    <link rel="stylesheet" href="./css/reset.css">
+    <link rel="stylesheet" href="./css/style.css">
+
+    <!-- 引入 echarts.js -->
+    <script src="./js/echarts.min.js"></script>
+</head>
+<script src="https://apps.bdimg.com/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="js/jquery-1.9.1.min.js"></script>
+<script src="./js/bootstrap.min.js"></script>
+<script src="./js/ajax.js"></script>
+<script src="./js/mainfunc.js"></script>
+
+<body>
+    <div class="welcome">
+        <video autoplay loop muted>
+    <source src="./张亮&刘治宇_20200906.mp4" type="video/mp4"  />
+  </video>
+        <button type="button" class="btn btn-primary startBtn" onclick="startBtnFn()">开始体验</button>
+    </div>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div class="container-fluid">
+        <div class="row header">
+            <div class="col-md-3 logo"><img src="./img/logo.png" alt=""></div>
+            <div class="col-md-12 slogan">人工智能赛艇生物力学动作捕捉分析系统</div>
+        </div>
+        <p class="countDown" style="display: none;">倒计时<span id="dd">5</span>秒</p>
+        <div class="row clear linePadding">
+            <div class="col-md-5  chartBorderV">
+                <img class="myVideo" src="http://10.84.97.68:60000/video_feed" alt="">
+                <div class="btn-group" role="group" aria-label="...">
+                    <button type="button" class="btn btn-default end-Btn" data-toggle="modal" data-target="#myModal" onclick="endBtnFn()">结束体验</button>
+                </div>
+            </div>
+
+            <div class="col-md-7 ">
+                <!-- 躯干 -->
+                <div class="col-md-6 ">
+                    <div id="chart1" style="width:100%;margin-bottom:5%;" class="chartBorder"></div>
+                </div>
+                <!-- 手肘 -->
+                <div class="col-md-6 ">
+                    <div id="chart2" style="width:100%;margin-bottom:5%;" class="chartBorder"></div>
+                </div>
+                <!-- 臀部 -->
+                <div class="col-md-6 ">
+                    <div id="chart3" style="width:100%;margin-bottom:5%;" class="chartBorder"></div>
+                </div>
+                <!-- 脚踝 -->
+                <div class="col-md-6 ">
+                    <div id="chart4" style="width:100%;margin-bottom:5%;" class="chartBorder"></div>
+                </div>
+            </div>
+        </div>
+        <div class="row clear linePadding">
+            <div class="col-md-12 ">
+                <div class="col-md-4">
+                    <video class="chartBorderV2" src="./C2划船机讲堂--如何使用划船器（中文）.mp4" style="width:100%;margin-bottom:5%; height: 300px;" controls="controls" loop="loop" autoplay="autoplay" muted="src"></video>
+                </div>
+                <div class="col-md-4 ">
+                    <div id="chart6" style="width:100%;margin-bottom:5%;" class="chartBorder"></div>
+                </div>
+                <!-- 膝盖 -->
+                <div class="col-md-4 ">
+                    <div id="chart5" style="width:100%;margin-bottom:5%;" class="chartBorder"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <!-- <h4 class="modal-title" id="myModalLabel">成绩单</h4> -->
+                </div>
+                <div class="modal-body">
+                    <div class="loading">
+                        <p>报告生成中，请稍后...</p>
+                        <img src="./img/Bean Eater-1s-200px.gif" alt="">
+                    </div>
+                    <div class="error">
+                        <div class="list-head">
+                            <h3 class="errScore"></h3>
+                            <p class="errcomment">啊噢......你的动作失误太多啦！请注意<span>调整姿势</span>，不要灰心，<span>再试一次吧！</span></p>
+                        </div>
+                        <!-- <img style=" width: 20%;height: auto; " src="./img/sad-1.1s-47px.svg " alt=" "> -->
+                    </div>
+                    <div class="report-contain " style="display: none; ">
+                        <div class="list-head ">
+                            <h3 class="score "></h3>
+                            <p class="comment "></p>
+                        </div>
+                        <div class="list ">
+                            <li class="cycle "></li>
+                            <li class="ankle "></li>
+                            <li class="elbow "></li>
+                            <li class="torso "></li>
+                            <li class="knee "></li>
+                            <li class="hip "></li>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="countDown-box " style="display: none; ">
+        <div class="screen "></div>
+        <div class="lines "></div>
+        <div class="number ">3</div>
+    </div>
+</body>
+
+</html>
