@@ -1,5 +1,5 @@
         html {
-            background-color: #010825;
+            background-color: #010825;          
         }
         
         body {
@@ -13,9 +13,13 @@
             background: #010825;
             /* background-image: linear-gradient(page #010825, #fff); */
             width: 100%;
-            min-height: 1080px;
-            height: 1080px;
             background-size: 100%;
+
+            /* 6/7/2021  --  Jae */
+            /* min-height: 1080px; */
+            /* height: 1080px; */
+            height: 100vh;
+            overflow: auto;
         }
         
         .head {
