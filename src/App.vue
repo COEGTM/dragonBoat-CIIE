@@ -399,42 +399,41 @@
         updateFlag: "",
         spinShow: false,
 
-        staticData: {
-          "hand": {
-            "angle": 233,
-            "description": "描述为6个字。",
-            "flag": 1
-          },
-          "athlete_id": 1,
-          "elbow": {
-            "angle": 76,
-            "description": "描述为6个字。",
-            "flag": 0
-          },
-          "arm": {
-            "angle": 160,
-            "description": "描述为6个字。",
-            "flag": 1
-          },
+        // staticData: {
+        //   "hand": {
+        //     "angle": 233,
+        //     "description": "描述为6个字。",
+        //     "flag": 1
+        //   },
+        //   "athlete_id": 1,
+        //   "elbow": {
+        //     "angle": 76,
+        //     "description": "描述为6个字。",
+        //     "flag": 0
+        //   },
+        //   "arm": {
+        //     "angle": 160,
+        //     "description": "描述为6个字。",
+        //     "flag": 1
+        //   },
 
-          "hip": {
-            "angle": 168,
-            "description": "描述为6个字。",
-            "flag": 1
-          },
-          "knee": {
-            "angle": 346,
-            "description": "描述为6个字。",
-            "flag": 0
-          },
-          "record_id": 1,
-          "torso": {
-            "angle": 253,
-            "description": "描述为6个字。",
-            "flag": 2
-          }
-
-        }
+        //   "hip": {
+        //     "angle": 168,
+        //     "description": "描述为6个字。",
+        //     "flag": 1
+        //   },
+        //   "knee": {
+        //     "angle": 346,
+        //     "description": "描述为6个字。",
+        //     "flag": 0
+        //   },
+        //   "record_id": 1,
+        //   "torso": {
+        //     "angle": 253,
+        //     "description": "描述为6个字。",
+        //     "flag": 2
+        //   }
+        // }
       };
     },
 
@@ -525,23 +524,23 @@
 
       //最前端请求
       ajaxGetPeriodicReportFront() {
-        // var _this = this;
-        // this.$axios
-        //   .get(
-        //     `${this.newIp}/report/${this.addRecordForm.athlete_id}/${this.record_id}/periodic/front_end`
-        //   )
-        //   .then((res) => {
-        //     if (res.data) {
-        //       _this.frontPosture = res.data;
-        //     } else {
-        //     }
-        //   })
-        //   .catch((error) => {
-        //     _this.errorInfo = error.message;
-        //     _this.openNotificationWithIcon("error");
-        //   });
+        var _this = this;
+        this.$axios
+          .get(
+            `${this.newIp}/report/${this.addRecordForm.athlete_id}/${this.record_id}/periodic/front_end`
+          )
+          .then((res) => {
+            if (res.data) {
+              _this.frontPosture = res.data;
+            } else {
+            }
+          })
+          .catch((error) => {
+            _this.errorInfo = error.message;
+            _this.openNotificationWithIcon("error");
+          });
 
-        this.frontPosture = this.staticData
+        // this.frontPosture = this.staticData
       },
 
       //最远端请求
