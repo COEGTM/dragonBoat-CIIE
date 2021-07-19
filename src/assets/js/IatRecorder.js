@@ -86,7 +86,7 @@ const IatRecorder = class {
                 // 重新开始录音
                 setTimeout(() => {
                     this.webSocketSend()
-                }, 3000)
+                }, 300)
             }
             iatWS.onmessage = e => {
                 this.result(e.data)
@@ -236,7 +236,7 @@ const IatRecorder = class {
                 language: this.language, //小语种可在控制台--语音听写（流式）--方言/语种处添加试用
                 domain: 'iat',
                 accent: this.accent, //中文方言可在控制台--语音听写（流式）--方言/语种处添加试用
-                vad_eos: 60000, //支持的最长静音时间，超过这个时间认为音频结束，断开连接
+                vad_eos: 10000, //支持的最长静音时间，超过这个时间认为音频结束，断开连接
                 dwa: 'wpgs', //为使该功能生效，需到控制台开通动态修正功能（该功能免费）
             },
             data: {

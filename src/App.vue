@@ -194,7 +194,7 @@
           <!-- 划桨动作数据 -->
 
           <!-- 最远端姿势 -->
-          <a-col :span="16" class="back">
+          <!-- <a-col :span="16" class="back">
             <a-row type="flex" justify="center" class="backWrap">
               <a-col :span="4" class="maskBox">
                 <a-col :span="24" class="frontElbowWrapBox">
@@ -275,7 +275,7 @@
                 </a-col>
               </a-col>
             </a-row>
-          </a-col>
+          </a-col> -->
         </a-row>
       </div>
       <!-- board -->
@@ -589,7 +589,7 @@
 
       startTrain() {
         this.ajaxAddRecord();
-        setInterval(this.iatRecorderStart, 10000);
+        setInterval(this.iatRecorderStart, 11000);
       },
 
       stopTrain() {
@@ -819,35 +819,7 @@
     padding: 30px;
   }
 
-  /* report */
-  /* .ant-modal {
-    width: 70% !important;
-  }
-
-  .ant-modal-content {
-    width: 48%;
-    transform: translateX(54%);
-    -ms-transform: translateX(54%);
-  }
-
-  .reportModal .ant-modal-content .reportBG {
-    background: url('../static/img/images/reportBg.png') no-repeat center;
-    background-size: contain;
-    width: 600px;
-    padding: 30px;
-  }
-
-  .reportModal .ant-modal-content .reportBG .score {
-    margin-top: 86px;
-    height: 151px;
-  }
-
-  .reportModal .ant-modal-content .reportBG .reportData {
-    height: 55px;
-    text-align: center;
-  } */
-
-  /* report mask */
+  /* report mask --- start*/
   .reportModal {
     height: 100vh;
     width: 100%;
@@ -859,10 +831,6 @@
     left: 0;
     z-index: 9999;
     background: rgba(155, 155, 155, 0.1);
-    /* -webkit-transition: all 1s;
-    -moz-transition: all ease;
-    -o-transition: all 1s ease;
-    transition: all 1s ease; */
   }
 
   .reportModal .reportContain {
@@ -900,21 +868,25 @@
   .list {
     position: absolute;
     left: 25%;
-    top: 30.5%;
+    top: 230px;
   }
 
   .list li {
     list-style-type: none;
     width: 90%;
-    height: 64px;
-    padding: 8px;
+    height: 60px;
+    padding: 6.5px 0 6.5px 0;
+    margin: 3px 0;
     font-size: 12px;
   }
 
   .list li p {
     width: 100%;
+    margin: 0;
     position: relative;
     top: 50%;
     transform: translateY(-50%);
   }
+
+  /* report mask --- end */
 </style>
