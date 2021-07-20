@@ -248,13 +248,13 @@ const IatRecorder = class {
         }
         console.log("参数language：", this.language)
         console.log("参数accent：", this.accent)
-        console.log(Date.parse(new Date()))
         this.webSocket.send(JSON.stringify(params))
         // startTime = Date.parse(new Date())
+
         this.handlerInterval = setInterval(() => {
             // websocket未连接
             if (this.webSocket.readyState !== 1) {
-                console.log("websocket未连接" + Date.parse(new Date()))
+                console.log("websocket未连接")
                 this.audioData = []
                 clearInterval(this.handlerInterval)
                 return

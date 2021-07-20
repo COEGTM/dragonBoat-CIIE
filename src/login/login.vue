@@ -34,6 +34,7 @@
       <video autoplay loop muted>
         <source src="./video.mp4" type="video/mp4" />
       </video>
+      <button type="button" class="btn btn-primary startBtn" @click="startBtnFn">开始体验</button>
     </div>
 
     <div class="countDown-box" :style="countDownStyle">
@@ -46,7 +47,7 @@
 </template>
 
 <script>
-  import { backUrl } from './../../config/http'
+  // import { backUrl } from './../../config/http'
   import IatRecorder from '../assets/js/IatRecorder'
   const iatRecorder = new IatRecorder();
 
@@ -83,9 +84,9 @@
     },
     methods: {
       getIpPort() {
-        //this.newIp = "http://" + window.location.host + ":9600";
+        this.newIp = "http://" + window.location.hostname + ":9600";
         // this.newIp = "http://" + '10.124.19.228:9600';
-        this.newIp = backUrl;
+        // this.newIp = backUrl;
       },
 
       onPageChange(pageIndex, pageSize) {
@@ -124,6 +125,12 @@
         this.$emit('sendathleteid', this.athlete_id);  //向父组件传值
         this.$router.push({ path: '/board' })
         this.$parent.startTrain();
+      },
+
+      //开始体验按钮
+      startBtnFn() {
+        this.countDownShow();
+        this.timer_clock = setInterval(this.doLoop, 1000);
       },
 
       //录音 iatRecorder初始化
@@ -202,6 +209,18 @@
   .welcome video {
     width: 100%;
     height: 100%;
+  }
+
+  .welcome button {
+    position: fixed;
+    width: 300px;
+    height: 80px;
+    z-index: 999;
+    border-radius: 50px;
+    font-size: 30px;
+    bottom: 15%;
+    left: 50%;
+    margin-left: -150px;
   }
 
   /* 倒计时 */

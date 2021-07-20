@@ -194,7 +194,7 @@
           <!-- 划桨动作数据 -->
 
           <!-- 最远端姿势 -->
-          <!-- <a-col :span="16" class="back">
+          <a-col :span="16" class="back">
             <a-row type="flex" justify="center" class="backWrap">
               <a-col :span="4" class="maskBox">
                 <a-col :span="24" class="frontElbowWrapBox">
@@ -275,7 +275,7 @@
                 </a-col>
               </a-col>
             </a-row>
-          </a-col> -->
+          </a-col>
         </a-row>
       </div>
       <!-- board -->
@@ -285,7 +285,7 @@
 
 <script>
   import login from "../src/login/login";
-  import { backUrl } from "./../config/http"
+  // import { backUrl } from "./../config/http"
   import IatRecorder from './assets/js/IatRecorder'
   const iatRecorder = new IatRecorder();
   export default {
@@ -398,42 +398,6 @@
         timer_resetSummy: "",
         updateFlag: "",
         spinShow: false,
-
-        // staticData: {
-        //   "hand": {
-        //     "angle": 233,
-        //     "description": "描述为6个字。",
-        //     "flag": 1
-        //   },
-        //   "athlete_id": 1,
-        //   "elbow": {
-        //     "angle": 76,
-        //     "description": "描述为6个字。",
-        //     "flag": 0
-        //   },
-        //   "arm": {
-        //     "angle": 160,
-        //     "description": "描述为6个字。",
-        //     "flag": 1
-        //   },
-
-        //   "hip": {
-        //     "angle": 168,
-        //     "description": "描述为6个字。",
-        //     "flag": 1
-        //   },
-        //   "knee": {
-        //     "angle": 346,
-        //     "description": "描述为6个字。",
-        //     "flag": 0
-        //   },
-        //   "record_id": 1,
-        //   "torso": {
-        //     "angle": 253,
-        //     "description": "描述为6个字。",
-        //     "flag": 2
-        //   }
-        // }
       };
     },
 
@@ -458,11 +422,11 @@
 
     methods: {
       getIpPort() {
-        // this.newIp = "http://" + window.location.host + ":9600";
-        // this.videoFeed = "http://" + window.location.host
+        this.newIp = "http://" + window.location.hostname + ":9600";
+        this.videoFeed = "http://" + window.location.hostname
         // this.newIp =  "http://"+'10.124.19.228:9600';
-        this.newIp = backUrl;
-        this.videoFeed = "http://" + "10.124.19.228";
+        // this.newIp = backUrl;
+        // this.videoFeed = "http://" + "10.124.19.228";
       },
       ajaxAddRecord() {
         var _this = this;
@@ -539,8 +503,6 @@
             _this.errorInfo = error.message;
             _this.openNotificationWithIcon("error");
           });
-
-        // this.frontPosture = this.staticData
       },
 
       //最远端请求
@@ -588,7 +550,8 @@
 
       startTrain() {
         this.ajaxAddRecord();
-        setInterval(this.iatRecorderStart, 11000);
+        this.iatRecorderStart();
+        setInterval(this.iatRecorderStart, 10000);
       },
 
       stopTrain() {
@@ -770,28 +733,33 @@
 
       //录音 iatRecorder初始化
       init(iatRecorder) {
-        console.log("app.vue  init")
         // iatRecorder.onWillStatusChange = function (oldStatus, newStatus) { }
         iatRecorder.onTextChange = (text) => {
           let pattern1 = /[\|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\，|\。|\？|\：|\；|\、|\‘|\’|\“|\”|\·|\！]/g;
-          let pattern2 = /[\u7ed3][\u675f][\u8bad][\u7ec3]/g;  //结束训练
-          let pattern3 = /[\u5f00][\u59cb][\u8bad][\u7ec3]/g;  //开始训练
+          let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
+          let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
           let pattern4 = /[\u67e5][\u770b][\u62a5][\u544a]/g;  //查看报告
+          let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
           if (text[text.length - 1] !== '。') {  //原始识别结束后会加上'。'，去掉最后一次的识别结果
             text = text.replace(pattern1, '');
             let isTrue2 = pattern2.test(text);
             let isTrue3 = pattern3.test(text);
             let isTrue4 = pattern4.test(text);
-            if (isTrue2) { //结束训练
+            let isTrue5 = pattern5.test(text);
+            if (isTrue2) { //停止训练
               this.stopTrain();
               return
             }
-            if (isTrue3) { //开始训练
+            if (isTrue3) { //再次训练
               this.startTrain();
               return
             }
             if (isTrue4) { //查看报告
-              this.ajaxUpdateRecord()
+              this.ajaxUpdateRecord();
+              return
+            }
+            if (isTrue5) { //关闭报告
+              this.report = false;
               return
             }
           }
