@@ -47,9 +47,14 @@
 </template>
 
 <script>
-  // import { backUrl } from './../../config/http'
+  import { backUrl } from './../../config/http'
+  //语音听写
   import IatRecorder from '../assets/js/IatRecorder'
   const iatRecorder = new IatRecorder();
+
+  //语音转写
+  import IatTaste from '../assets/js/IatTaste'
+  const iatTaste = new IatTaste();
 
   export default {
     name: "login",
@@ -74,19 +79,21 @@
       };
     },
     created() {
-      this.init(iatRecorder); //初始化语音
+      // this.init(iatRecorder); //初始化语音
       this.loadingShow = true;
+
+      this.tasteStart()
     },
     mounted() {
       this.getIpPort();
       this.getNameList();
-      this.iatRecorderStart();
+      // this.iatRecorderStart();
     },
     methods: {
       getIpPort() {
-        this.newIp = "http://" + window.location.hostname + ":9600";
+        // this.newIp = "http://" + window.location.hostname + ":9600";
         // this.newIp = "http://" + '10.124.19.228:9600';
-        // this.newIp = backUrl;
+        this.newIp = backUrl;
       },
 
       onPageChange(pageIndex, pageSize) {
@@ -129,6 +136,7 @@
 
       //开始体验按钮
       startBtnFn() {
+        this.iatRecorderStop();
         this.countDownShow();
         this.timer_clock = setInterval(this.doLoop, 1000);
       },
@@ -144,6 +152,7 @@
             text = text.replace(pattern1, '');
             let isTrue = pattern2.test(text);
             if (isTrue) {
+              this.iatRecorderStop();
               this.countDownShow();
               this.timer_clock = setInterval(this.doLoop, 1000);
               return
@@ -171,7 +180,6 @@
           clearInterval(this.timer_clock); //清除js定时器
           this.timer_nums = 3; //重置时间
           this.countDownStyleChange();//倒计时
-          this.iatRecorderStop();
           this.selectItem(this.pageData[0]);//结束倒计时后进行页面跳转，先默认传第一条参
         }
       },
@@ -185,6 +193,11 @@
         this.countDownStyle.display = "none";
         return this.countDownStyle;
       },
+
+      //语音转写
+      tasteStart() {
+        iatTaste.init()
+      }
     },
   };
 </script>

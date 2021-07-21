@@ -1,5 +1,5 @@
 import CryptoJS from 'crypto-js'
-import TransWorker from './transcode.worker.js'
+import TransWorker from './transcode.worker'
 
 // const transWorker = new TransWorker()
 
@@ -86,7 +86,7 @@ const IatRecorder = class {
                 // 重新开始录音
                 setTimeout(() => {
                     this.webSocketSend()
-                }, 300)
+                }, 200)
             }
             iatWS.onmessage = e => {
                 this.result(e.data)
@@ -257,9 +257,10 @@ const IatRecorder = class {
                 console.log("websocket未连接")
                 this.audioData = []
                 clearInterval(this.handlerInterval)
+                // this.connectWebSocket()
                 return
             }
-            if (this.audioData.length === 0) {
+            if (this.audioData.length === 0) {//主动触发stop()
                 console.log("自动关闭", this.status)
                 if (this.status === 'end') {
                     this.webSocket.send(

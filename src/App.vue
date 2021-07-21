@@ -285,9 +285,12 @@
 
 <script>
   import login from "../src/login/login";
-  // import { backUrl } from "./../config/http"
+  import { backUrl } from "./../config/http"
+  //语音听写
   import IatRecorder from './assets/js/IatRecorder'
   const iatRecorder = new IatRecorder();
+
+
   export default {
     components: {
       login,
@@ -415,18 +418,17 @@
     },
 
     created() {
-      this.init(iatRecorder);
     },
 
     watch: {},
 
     methods: {
       getIpPort() {
-        this.newIp = "http://" + window.location.hostname + ":9600";
-        this.videoFeed = "http://" + window.location.hostname
+        // this.newIp = "http://" + window.location.hostname + ":9600";
+        // this.videoFeed = "http://" + window.location.hostname
         // this.newIp =  "http://"+'10.124.19.228:9600';
-        // this.newIp = backUrl;
-        // this.videoFeed = "http://" + "10.124.19.228";
+        this.newIp = backUrl;
+        this.videoFeed = "http://" + "10.124.19.228";
       },
       ajaxAddRecord() {
         var _this = this;
@@ -549,9 +551,10 @@
       },
 
       startTrain() {
+        this.init(iatRecorder);
         this.ajaxAddRecord();
         this.iatRecorderStart();
-        setInterval(this.iatRecorderStart, 10000);
+        // setInterval(this.iatRecorderStart, 10000);
       },
 
       stopTrain() {
@@ -559,7 +562,7 @@
         clearInterval(this.timer_resetSummy);
         this.stopBtnTxt = "再次训练";
         this.clearAll();
-        // this.ajaxUpdateRecord();
+        this.ajaxUpdateRecord();
       },
 
       showModalName() {
