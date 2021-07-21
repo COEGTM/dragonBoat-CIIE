@@ -255,12 +255,14 @@ const IatRecorder = class {
             // websocket未连接
             if (this.webSocket.readyState !== 1) {
                 console.log("websocket未连接")
-                this.audioData = []
+
+                this.webSocket = null  //add
+                // this.audioData = []
                 clearInterval(this.handlerInterval)
-                // this.connectWebSocket()
+                this.connectWebSocket()  //add
                 return
             }
-            if (this.audioData.length === 0) {//主动触发stop()
+            if (this.audioData.length === 0) {
                 console.log("自动关闭", this.status)
                 if (this.status === 'end') {
                     this.webSocket.send(
@@ -315,10 +317,12 @@ const IatRecorder = class {
                 }
                 // 将结果存储在resultTextTemp中
                 this.setResultText({
+                    // resultTextTemp: this.resultText,
                     resultTextTemp: this.resultText + str,
                 })
             } else {
                 this.setResultText({
+                    // resultText: this.resultText,
                     resultText: this.resultText + str,
                 })
             }

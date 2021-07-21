@@ -52,10 +52,6 @@
   import IatRecorder from '../assets/js/IatRecorder'
   const iatRecorder = new IatRecorder();
 
-  //语音转写
-  import IatTaste from '../assets/js/IatTaste'
-  const iatTaste = new IatTaste();
-
   export default {
     name: "login",
     data() {
@@ -79,15 +75,13 @@
       };
     },
     created() {
-      // this.init(iatRecorder); //初始化语音
+      this.init(iatRecorder); //初始化语音
       this.loadingShow = true;
-
-      this.tasteStart()
     },
     mounted() {
       this.getIpPort();
       this.getNameList();
-      // this.iatRecorderStart();
+      this.iatRecorderStart();
     },
     methods: {
       getIpPort() {
@@ -131,7 +125,8 @@
         this.athlete_id = value;
         this.$emit('sendathleteid', this.athlete_id);  //向父组件传值
         this.$router.push({ path: '/board' })
-        this.$parent.startTrain();
+        this.$parent.intoTrainPage();
+        // this.$parent.startTrain();
       },
 
       //开始体验按钮
@@ -143,7 +138,6 @@
 
       //录音 iatRecorder初始化
       init(iatRecorder) {
-        // iatRecorder.onWillStatusChange = function (oldStatus, newStatus) { }
         iatRecorder.onTextChange = (text) => {
           let pattern1 = /[\|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\，|\。|\？|\：|\；|\、|\‘|\’|\“|\”|\·|\！]/g;
           // let pattern2 = /[\u9f99][\u821f][\u9f99][\u821f][\u5f00][\u59cb]/g;  //龙舟龙舟，开始
@@ -193,11 +187,6 @@
         this.countDownStyle.display = "none";
         return this.countDownStyle;
       },
-
-      //语音转写
-      tasteStart() {
-        iatTaste.init()
-      }
     },
   };
 </script>

@@ -11,42 +11,6 @@
       <!--  loading end-->
 
       <!-- 个人战绩 -->
-      <!-- <a-modal class="reportModal" v-model="report" :footer="null" :closable="false" :maskClosable="true"
-        :keyboard="false" @cancel="handleCancel">
-        <a-spin tip="Loading..." v-show="spinShow">
-          <div class="spin-content">报告正在加载中，请稍后...</div>
-        </a-spin>
-        <a-descriptions class="reportBG" v-show="!spinShow">
-          <a-descriptions-item label="动作质量评估">
-            {{ summaryData.score }}
-          </a-descriptions-item>
-          <a-descriptions-item label="动作周期稳定性">
-            {{ summaryData.stability }}
-          </a-descriptions-item>
-          <a-descriptions-item label="桨频">
-            {{ summaryData.speed }}次/分
-          </a-descriptions-item>
-          <a-descriptions-item label="手部训练" :span="3">
-            {{ summaryData.hand }}
-          </a-descriptions-item>
-          <a-descriptions-item label="肘部训练" :span="3">
-            {{ summaryData.elbow }}
-          </a-descriptions-item>
-          <a-descriptions-item label="大臂训练" :span="3">
-            {{ summaryData.arm }}
-          </a-descriptions-item>
-          <a-descriptions-item label="躯干训练" :span="3">
-            {{ summaryData.torso }}
-          </a-descriptions-item>
-          <a-descriptions-item label="髋部训练" :span="3">
-            {{ summaryData.hip }}
-          </a-descriptions-item>
-          <a-descriptions-item label="膝盖训练" :span="3">
-            {{ summaryData.knee }}
-          </a-descriptions-item>
-        </a-descriptions>
-      </a-modal> -->
-
       <div class="reportModal" v-show="report" @click="hideModalReport($event)">
         <div class="reportContain" ref="reportContain">
           <a-spin tip="Loading..." v-show="spinShow">
@@ -401,6 +365,13 @@
         timer_resetSummy: "",
         updateFlag: "",
         spinShow: false,
+
+        //语音指令判断
+        isTrue2: false,
+        isTrue3: false,
+        isTrue4: false,
+        isTrue5: false,
+        tempText: ''
       };
     },
 
@@ -418,6 +389,7 @@
     },
 
     created() {
+      this.init(iatRecorder);
     },
 
     watch: {},
@@ -551,10 +523,14 @@
       },
 
       startTrain() {
-        this.init(iatRecorder);
         this.ajaxAddRecord();
-        this.iatRecorderStart();
+        // this.iatRecorderStart(); //直接在login.vue页面通过this.$parent方式调用了
         // setInterval(this.iatRecorderStart, 10000);
+      },
+
+      intoTrainPage() {
+        this.startTrain()
+        this.iatRecorderStart()
       },
 
       stopTrain() {
@@ -738,6 +714,7 @@
       init(iatRecorder) {
         // iatRecorder.onWillStatusChange = function (oldStatus, newStatus) { }
         iatRecorder.onTextChange = (text) => {
+          /* text是每次识别后叠加的结果，需要去掉之前识别的内容进行判断 */
           let pattern1 = /[\|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\，|\。|\？|\：|\；|\、|\‘|\’|\“|\”|\·|\！]/g;
           let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
           let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
@@ -745,24 +722,29 @@
           let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
           if (text[text.length - 1] !== '。') {  //原始识别结束后会加上'。'，去掉最后一次的识别结果
             text = text.replace(pattern1, '');
-            let isTrue2 = pattern2.test(text);
-            let isTrue3 = pattern3.test(text);
-            let isTrue4 = pattern4.test(text);
-            let isTrue5 = pattern5.test(text);
-            if (isTrue2) { //停止训练
+            let temp = text.slice(this.tempText.length);
+            this.isTrue2 = pattern2.test(temp);
+            this.isTrue3 = pattern3.test(temp);
+            this.isTrue4 = pattern4.test(temp);
+            this.isTrue5 = pattern5.test(temp);
+            if (this.isTrue2) { //停止训练
               this.stopTrain();
+              this.tempText = text;
               return
             }
-            if (isTrue3) { //再次训练
+            if (this.isTrue3) { //再次训练
               this.startTrain();
+              this.tempText = text;
               return
             }
-            if (isTrue4) { //查看报告
+            if (this.isTrue4) { //查看报告
               this.ajaxUpdateRecord();
+              this.tempText = text;
               return
             }
-            if (isTrue5) { //关闭报告
+            if (this.isTrue5) { //关闭报告
               this.report = false;
+              this.tempText = text;
               return
             }
           }
