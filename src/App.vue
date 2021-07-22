@@ -712,42 +712,40 @@
 
       //录音 iatRecorder初始化
       init(iatRecorder) {
-        // iatRecorder.onWillStatusChange = function (oldStatus, newStatus) { }
         iatRecorder.onTextChange = (text) => {
           /* text是每次识别后叠加的结果，需要去掉之前识别的内容进行判断 */
-          let pattern1 = /[\|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\，|\。|\？|\：|\；|\、|\‘|\’|\“|\”|\·|\！]/g;
+          // let pattern1 = /[\|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\，|\。|\？|\：|\；|\、|\‘|\’|\“|\”|\·|\！]/g;
           let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
           let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
           let pattern4 = /[\u67e5][\u770b][\u62a5][\u544a]/g;  //查看报告
           let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
-          if (text[text.length - 1] !== '。') {  //原始识别结束后会加上'。'，去掉最后一次的识别结果
-            text = text.replace(pattern1, '');
-            let temp = text.slice(this.tempText.length);
-            this.isTrue2 = pattern2.test(temp);
-            this.isTrue3 = pattern3.test(temp);
-            this.isTrue4 = pattern4.test(temp);
-            this.isTrue5 = pattern5.test(temp);
-            if (this.isTrue2) { //停止训练
-              this.stopTrain();
-              this.tempText = text;
-              return
-            }
-            if (this.isTrue3) { //再次训练
-              this.startTrain();
-              this.tempText = text;
-              return
-            }
-            if (this.isTrue4) { //查看报告
-              this.ajaxUpdateRecord();
-              this.tempText = text;
-              return
-            }
-            if (this.isTrue5) { //关闭报告
-              this.report = false;
-              this.tempText = text;
-              return
-            }
+          // if (text[text.length - 1] !== '。') {  //原始识别结束后会加上'。'，去掉最后一次的识别结果
+          let temp = text.slice(this.tempText.length);
+          this.isTrue2 = pattern2.test(temp);
+          this.isTrue3 = pattern3.test(temp);
+          this.isTrue4 = pattern4.test(temp);
+          this.isTrue5 = pattern5.test(temp);
+          if (this.isTrue2 && !(this.isTrue3) && !(this.isTrue4) && !(this.isTrue5)) { //停止训练
+            this.stopTrain();
+            this.tempText = text;
+            return
+          } else if (!(this.isTrue2) && this.isTrue3 && !(this.isTrue4) && !(this.isTrue5)) { //再次训练
+            this.startTrain();
+            this.tempText = text;
+            return
+          } else if (!(this.isTrue2) && !(this.isTrue3) && this.isTrue4 && !(this.isTrue5)) { //查看报告
+            this.ajaxUpdateRecord();
+            this.tempText = text;
+            return
+          } else if (!(this.isTrue2) && !(this.isTrue3) && !(this.isTrue4) && this.isTrue5) { //关闭报告
+            this.report = false;
+            this.tempText = text;
+            return
+          } else {
+            this.tempText = text;
+            return
           }
+          // }
         }
       },
 

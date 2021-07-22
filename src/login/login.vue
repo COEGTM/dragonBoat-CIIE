@@ -72,6 +72,7 @@
         countDownStyle: {
           display: "none"
         },
+        tempText: ''
       };
     },
     created() {
@@ -139,18 +140,19 @@
       //录音 iatRecorder初始化
       init(iatRecorder) {
         iatRecorder.onTextChange = (text) => {
-          let pattern1 = /[\|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\，|\。|\？|\：|\；|\、|\‘|\’|\“|\”|\·|\！]/g;
           // let pattern2 = /[\u9f99][\u821f][\u9f99][\u821f][\u5f00][\u59cb]/g;  //龙舟龙舟，开始
           let pattern2 = /[\u5f00][\u59cb]/g;  //开始
-          if (text[text.length - 1] !== '。') {  //原始识别结束后会加上'。'，去掉最后一次的识别结果
-            text = text.replace(pattern1, '');
-            let isTrue = pattern2.test(text);
-            if (isTrue) {
-              this.iatRecorderStop();
-              this.countDownShow();
-              this.timer_clock = setInterval(this.doLoop, 1000);
-              return
-            }
+          let temp = text.slice(this.tempText.length);
+          let isTrue = pattern2.test(temp);
+          if (isTrue) {
+            this.tempText = text;
+            this.iatRecorderStop();
+            this.countDownShow();
+            this.timer_clock = setInterval(this.doLoop, 1000);
+            return
+          } else {
+            this.tempText = text;
+            return
           }
         }
       },

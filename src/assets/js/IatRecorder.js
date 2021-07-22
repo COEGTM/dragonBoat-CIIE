@@ -11,9 +11,6 @@ const API_KEY = 'bc802d4f68f0c9a732eb31a74d7893f6'
 // const API_SECRET = 'M2YzYjhmY2U4YjdkMjY0Y2FlNzNkNjc2'
 // const API_KEY = '075ad8db92adba69889406e53a10826c'
 
-// var startTime = ""
-// var endTime = ""
-
 function getWebSocketUrl() {
     return new Promise((resolve, reject) => {
         // 请求地址根据语种不同变化
@@ -95,8 +92,6 @@ const IatRecorder = class {
                 this.recorderStop()
             }
             iatWS.onclose = e => {
-                // endTime = Date.parse(new Date())
-                // console.log("持续时间", endTime - startTime)
                 this.recorderStop()
             }
         })
@@ -233,8 +228,9 @@ const IatRecorder = class {
                 app_id: this.appId,
             },
             business: {
-                language: this.language, //小语种可在控制台--语音听写（流式）--方言/语种处添加试用
+                language: this.language, //小语种可在控
                 domain: 'iat',
+                ptt: 0,//不添加标点符号
                 accent: this.accent, //中文方言可在控制台--语音听写（流式）--方言/语种处添加试用
                 vad_eos: 10000, //支持的最长静音时间，超过这个时间认为音频结束，断开连接
                 dwa: 'wpgs', //为使该功能生效，需到控制台开通动态修正功能（该功能免费）
@@ -249,7 +245,6 @@ const IatRecorder = class {
         console.log("参数language：", this.language)
         console.log("参数accent：", this.accent)
         this.webSocket.send(JSON.stringify(params))
-        // startTime = Date.parse(new Date())
 
         this.handlerInterval = setInterval(() => {
             // websocket未连接
@@ -263,9 +258,9 @@ const IatRecorder = class {
                 return
             }
             if (this.audioData.length === 0) {
-                console.log("自动关闭", this.status)
                 if (this.status === 'end') {
-                    this.webSocket.send(
+                    console.log("自动关闭", this.status)
+                    this.webSocket.send(  //结束帧
                         JSON.stringify({
                             data: {
                                 status: 2,
