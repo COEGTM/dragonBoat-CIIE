@@ -93,6 +93,7 @@ const IatRecorder = class {
             }
             iatWS.onclose = e => {
                 this.recorderStop()
+                this.connectWebSocket()
             }
         })
     }
@@ -217,6 +218,7 @@ const IatRecorder = class {
         }
         return window.btoa(binary)
     }
+
     // 向webSocket发送数据
     webSocketSend() {
         if (this.webSocket.readyState !== 1) {
@@ -245,21 +247,18 @@ const IatRecorder = class {
         console.log("参数language：", this.language)
         console.log("参数accent：", this.accent)
         this.webSocket.send(JSON.stringify(params))
-
         this.handlerInterval = setInterval(() => {
-            // websocket未连接
             if (this.webSocket.readyState !== 1) {
                 console.log("websocket未连接")
-
-                this.webSocket = null  //add
-                // this.audioData = []
+                this.audioData = []
                 clearInterval(this.handlerInterval)
-                this.connectWebSocket()  //add
                 return
             }
+
+
             if (this.audioData.length === 0) {
+                console.log("自动关闭", this.status)
                 if (this.status === 'end') {
-                    console.log("自动关闭", this.status)
                     this.webSocket.send(  //结束帧
                         JSON.stringify({
                             data: {
@@ -312,12 +311,10 @@ const IatRecorder = class {
                 }
                 // 将结果存储在resultTextTemp中
                 this.setResultText({
-                    // resultTextTemp: this.resultText,
                     resultTextTemp: this.resultText + str,
                 })
             } else {
                 this.setResultText({
-                    // resultText: this.resultText,
                     resultText: this.resultText + str,
                 })
             }

@@ -396,11 +396,11 @@
 
     methods: {
       getIpPort() {
-        // this.newIp = "http://" + window.location.hostname + ":9600";
-        // this.videoFeed = "http://" + window.location.hostname
+        this.newIp = "http://" + window.location.hostname + ":9600";
+        this.videoFeed = "http://" + window.location.hostname
         // this.newIp =  "http://"+'10.124.19.228:9600';
-        this.newIp = backUrl;
-        this.videoFeed = "http://" + "10.124.19.228";
+        // this.newIp = backUrl;
+        // this.videoFeed = "http://" + "10.124.19.228";
       },
       ajaxAddRecord() {
         var _this = this;
