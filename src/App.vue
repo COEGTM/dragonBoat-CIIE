@@ -11,7 +11,7 @@
       <!--  loading end-->
 
       <!-- 个人战绩 -->
-      <div class="reportModal" v-show="report" @click="hideModalReport($event)">
+      <div class="reportModal" v-show="report" @click="hideModal($event)">
         <div class="reportContain" ref="reportContain">
           <a-spin tip="Loading..." v-show="spinShow">
             <div class="spin-content">报告正在加载中，请稍后...</div>
@@ -371,7 +371,6 @@
         isTrue3: false,
         isTrue4: false,
         isTrue5: false,
-        tempText: ''
       };
     },
 
@@ -388,9 +387,7 @@
       this.record_id = window.localStorage.getItem("record_id");
     },
 
-    created() {
-      this.init(iatRecorder);
-    },
+    created() { },
 
     watch: {},
 
@@ -433,6 +430,7 @@
       },
 
       ajaxUpdateRecord() {
+        console.log(this.record_id)
         var _this = this;
         this.loadingShow = true;
         this.$axios
@@ -524,14 +522,13 @@
 
       startTrain() {
         this.ajaxAddRecord();
-        // this.iatRecorderStart(); //直接在login.vue页面通过this.$parent方式调用了
-        // setInterval(this.iatRecorderStart, 10000);
       },
 
-      intoTrainPage() {
-        this.startTrain()
-        this.iatRecorderStart()
-      },
+      // intoTrainPage() {
+      //   this.startTrain()
+      //   // this.init(iatRecorder)
+      //   // this.iatRecorderStart()
+      // },
 
       stopTrain() {
         clearInterval(this.timer_reset);
@@ -553,10 +550,13 @@
         //   score: "", 
         // }
       },
-      hideModalReport(event) {
+      hideModal(event) {
         if (!this.$refs.reportContain.contains(event.target)) {
-          this.report = false;
+          this.hideModalReport()
         }
+      },
+      hideModalReport() {
+        this.report = false;
       },
       getathleteid(value) {  //在list页面点击具体的运动员之后需要保存的信息
         window.localStorage.setItem("athlete_id", value.athlete_id);
@@ -713,39 +713,38 @@
       //录音 iatRecorder初始化
       init(iatRecorder) {
         iatRecorder.onTextChange = (text) => {
+          let tempText = window.localStorage.getItem("temp_text")
           /* text是每次识别后叠加的结果，需要去掉之前识别的内容进行判断 */
-          // let pattern1 = /[\|\~|\`|\!|\@|\#|\$|\%|\^|\&|\*|\(|\)|\-|\_|\+|\=|\||\\|\[|\]|\{|\}|\;|\:|\"|\'|\,|\<|\.|\>|\/|\?|\，|\。|\？|\：|\；|\、|\‘|\’|\“|\”|\·|\！]/g;
           let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
           let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
           let pattern4 = /[\u67e5][\u770b][\u62a5][\u544a]/g;  //查看报告
           let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
-          // if (text[text.length - 1] !== '。') {  //原始识别结束后会加上'。'，去掉最后一次的识别结果
-          let temp = text.slice(this.tempText.length);
+          let temp = text.slice(tempText.length);
           this.isTrue2 = pattern2.test(temp);
           this.isTrue3 = pattern3.test(temp);
           this.isTrue4 = pattern4.test(temp);
           this.isTrue5 = pattern5.test(temp);
+          console.log(this.isTrue2, this.isTrue3, this.isTrue4, this.isTrue5)
           if (this.isTrue2 && !(this.isTrue3) && !(this.isTrue4) && !(this.isTrue5)) { //停止训练
             this.stopTrain();
-            this.tempText = text;
+            window.localStorage.setItem("temp_text", text);
             return
           } else if (!(this.isTrue2) && this.isTrue3 && !(this.isTrue4) && !(this.isTrue5)) { //再次训练
             this.startTrain();
-            this.tempText = text;
+            window.localStorage.setItem("temp_text", text);
             return
           } else if (!(this.isTrue2) && !(this.isTrue3) && this.isTrue4 && !(this.isTrue5)) { //查看报告
             this.ajaxUpdateRecord();
-            this.tempText = text;
+            window.localStorage.setItem("temp_text", text);
             return
           } else if (!(this.isTrue2) && !(this.isTrue3) && !(this.isTrue4) && this.isTrue5) { //关闭报告
-            this.report = false;
-            this.tempText = text;
+            this.hideModalReport()
+            window.localStorage.setItem("temp_text", text);
             return
           } else {
-            this.tempText = text;
+            window.localStorage.setItem("temp_text", text);
             return
           }
-          // }
         }
       },
 

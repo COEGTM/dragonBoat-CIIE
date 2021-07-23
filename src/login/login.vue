@@ -87,7 +87,7 @@
     methods: {
       getIpPort() {
         this.newIp = "http://" + window.location.hostname + ":9600";
-        this.newIp = "http://" + '10.124.19.228:9600';
+        // this.newIp = "http://" + '10.124.19.228:9600';
         // this.newIp = backUrl;
       },
 
@@ -126,8 +126,8 @@
         this.athlete_id = value;
         this.$emit('sendathleteid', this.athlete_id);  //向父组件传值
         this.$router.push({ path: '/board' })
-        this.$parent.intoTrainPage();
-        // this.$parent.startTrain();
+        // this.$parent.intoTrainPage();
+        this.$parent.startTrain();
       },
 
       //开始体验按钮
@@ -140,15 +140,40 @@
       //录音 iatRecorder初始化
       init(iatRecorder) {
         iatRecorder.onTextChange = (text) => {
+          console.log(text)
           // let pattern2 = /[\u9f99][\u821f][\u9f99][\u821f][\u5f00][\u59cb]/g;  //龙舟龙舟，开始
-          let pattern2 = /[\u5f00][\u59cb]/g;  //开始
+          let pattern1 = /[\u5f00][\u59cb]/g;  //开始
+          let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
+          let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
+          let pattern4 = /[\u67e5][\u770b][\u62a5][\u544a]/g;  //查看报告
+          let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
           let temp = text.slice(this.tempText.length);
-          let isTrue = pattern2.test(temp);
-          if (isTrue) {
+          let isTrue1 = pattern1.test(temp);
+          let isTrue2 = pattern2.test(temp);
+          let isTrue3 = pattern3.test(temp);
+          let isTrue4 = pattern4.test(temp);
+          let isTrue5 = pattern5.test(temp);
+          if (isTrue1 && !(isTrue2) && !(isTrue3) && !(isTrue4) && !(isTrue5)) {  //开始倒计时跳转
             this.tempText = text;
             this.iatRecorderStop();
             this.countDownShow();
             this.timer_clock = setInterval(this.doLoop, 1000);
+            return
+          } else if ((!isTrue1) && isTrue2 && !(isTrue3) && !(isTrue4) && !(isTrue5)) {  //停止训练
+            this.$parent.stopTrain()
+            this.tempText = text;
+            return
+          } else if ((!isTrue1) && (!isTrue2) && isTrue3 && !(isTrue4) && !(isTrue5)) {  //再次训练
+            this.$parent.startTrain();
+            this.tempText = text;
+            return
+          } else if ((!isTrue1) && (!isTrue2) && !(isTrue3) && isTrue4 && !(isTrue5)) {  //查看报告
+            this.$parent.ajaxUpdateRecord();
+            this.tempText = text;
+            return
+          } else if ((!isTrue1) && (!isTrue2) && !(isTrue3) && !(isTrue4) && isTrue5) {  //关闭报告
+            this.$parent.hideModalReport()
+            this.tempText = text;
             return
           } else {
             this.tempText = text;
