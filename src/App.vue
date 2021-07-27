@@ -16,7 +16,8 @@
           <a-spin tip="Loading..." v-show="spinShow">
             <div class="spin-content">报告正在加载中，请稍后...</div>
           </a-spin>
-          <div class="reportBg" v-show="!spinShow">
+          <div class="reportBg" v-show="!spinShow"
+            :style="{backgroundImage:'url('+require('../static/img/images/reportBg.png')+')'}">
             <div class="list-head">
               <h3 class="score">{{summaryData.score}}</h3>
             </div>
@@ -25,13 +26,13 @@
                 <p>{{summaryData.stability}}</p>
               </li>
               <li class="hand">
-                <p>{{summaryData.hand}}</p>
+                <p>{{summaryData.wrist}}</p>
               </li>
               <li class="elbow">
                 <p>{{summaryData.elbow}}</p>
               </li>
               <li class="arm">
-                <p>{{summaryData.arm}}</p>
+                <p>{{summaryData.upperarm}}</p>
               </li>
               <li class="torso">
                 <p>{{summaryData.torso}}</p>
@@ -68,13 +69,13 @@
                 <a-col :span="24" class="frontElbowWrapBox">
                   <img src="./../static/img/images/hand.png" alt="" />
                   <img class="redMask mask" src="./../static/img/images/red.png"
-                    v-show="(frontPosture.hand.flag) && (frontPosture.hand.flag == 2)" />
+                    v-show="(frontPosture.wrist.flag) && (frontPosture.wrist.flag == 2)" />
                   <img class="orangeMask mask" src="./../static/img/images/orange.png"
-                    v-show="(frontPosture.hand.flag) && (frontPosture.hand.flag == 1)" />
+                    v-show="(frontPosture.wrist.flag) && (frontPosture.wrist.flag == 1)" />
                 </a-col>
                 <a-col :span="24" class="dec">
-                  <p>{{ frontPosture.hand.angle }}</p>
-                  <p>{{ frontPosture.hand.description }}</p>
+                  <p>{{ frontPosture.wrist.angle }}</p>
+                  <p>{{ frontPosture.wrist.description }}</p>
                 </a-col>
               </a-col>
               <a-col :span="4" class="maskBox">
@@ -94,13 +95,13 @@
                 <a-col :span="24">
                   <img src="./../static/img/images/arm.png" alt="" />
                   <img class="redMask mask" src="./../static/img/images/red.png"
-                    v-show="(frontPosture.arm.flag) && (frontPosture.arm.flag == 2)" />
+                    v-show="(frontPosture.upperarm.flag) && (frontPosture.upperarm.flag == 2)" />
                   <img class="orangeMask mask" src="./../static/img/images/orange.png"
-                    v-show="(frontPosture.arm.flag) && (frontPosture.arm.flag == 1)" />
+                    v-show="(frontPosture.upperarm.flag) && (frontPosture.upperarm.flag == 1)" />
                 </a-col>
                 <a-col :span="24" class="dec">
-                  <p>{{ frontPosture.arm.angle }}</p>
-                  <p>{{ frontPosture.arm.description }}</p>
+                  <p>{{ frontPosture.upperarm.angle }}</p>
+                  <p>{{ frontPosture.upperarm.description }}</p>
                 </a-col>
               </a-col>
               <a-col :span="4" class="maskBox">
@@ -164,13 +165,13 @@
                 <a-col :span="24" class="frontElbowWrapBox">
                   <img class="normalMask" src="./../static/img/images/hand.png" alt="" />
                   <img class="redMask mask" src="./../static/img/images/red.png"
-                    v-show="(backPosture.hand.flag) && (backPosture.hand.flag == 2)" />
+                    v-show="(backPosture.wrist.flag) && (backPosture.wrist.flag == 2)" />
                   <img class="orangeMask mask" src="./../static/img/images/orange.png"
-                    v-show="(backPosture.hand.flag) && (backPosture.hand.flag == 1)" />
+                    v-show="(backPosture.wrist.flag) && (backPosture.wrist.flag == 1)" />
                 </a-col>
                 <a-col :span="24" class="dec">
-                  <p>{{ backPosture.hand.angle }}</p>
-                  <p>{{ backPosture.hand.description }}</p>
+                  <p>{{ backPosture.wrist.angle }}</p>
+                  <p>{{ backPosture.wrist.description }}</p>
                 </a-col>
               </a-col>
               <a-col :span="4" class="maskBox">
@@ -190,13 +191,13 @@
                 <a-col :span="24">
                   <img src="./../static/img/images/arm.png" alt="" />
                   <img class="redMask mask" src="./../static/img/images/red.png"
-                    v-show="(backPosture.arm.flag) && (backPosture.arm.flag == 2)" />
+                    v-show="(backPosture.upperarm.flag) && (backPosture.upperarm.flag == 2)" />
                   <img class="orangeMask mask" src="./../static/img/images/orange.png"
-                    v-show="(backPosture.arm.flag) && (backPosture.arm.flag == 1)" />
+                    v-show="(backPosture.upperarm.flag) && (backPosture.upperarm.flag == 1)" />
                 </a-col>
                 <a-col :span="24" class="dec">
-                  <p>{{ backPosture.arm.angle }}</p>
-                  <p>{{ backPosture.arm.description }}</p>
+                  <p>{{ backPosture.upperarm.angle }}</p>
+                  <p>{{ backPosture.upperarm.description }}</p>
                 </a-col>
               </a-col>
               <a-col :span="4" class="maskBox">
@@ -301,12 +302,12 @@
             flag: 0,
             description: "",
           },
-          hand: {
+          wrist: {//wrist
             angle: "",
             flag: 0,
             description: "",
           },
-          arm: {
+          upperarm: {//upperarm
             angle: "",
             flag: 0,
             description: "",
@@ -335,12 +336,12 @@
             flag: 0,
             description: "",
           },
-          hand: {
+          wrist: {
             angle: "",
             flag: 0,
             description: "",
           },
-          arm: {
+          upperarm: {
             angle: "",
             flag: 0,
             description: "",
@@ -367,10 +368,10 @@
         spinShow: false,
 
         //语音指令判断
-        isTrue2: false,
-        isTrue3: false,
-        isTrue4: false,
-        isTrue5: false,
+        // isTrue2: false,
+        // isTrue3: false,
+        // isTrue4: false,
+        // isTrue5: false,
       };
     },
 
@@ -393,11 +394,11 @@
 
     methods: {
       getIpPort() {
-        this.newIp = "http://" + window.location.hostname + ":9600";
-        this.videoFeed = "http://" + window.location.hostname
+        // this.newIp = "http://" + window.location.hostname + ":9600";
+        // this.videoFeed = "http://" + window.location.hostname
         // this.newIp =  "http://"+'10.124.19.228:9600';
-        // this.newIp = backUrl;
-        // this.videoFeed = "http://" + "10.124.19.228";
+        this.newIp = backUrl;
+        this.videoFeed = "http://" + "10.124.19.228";
       },
       ajaxAddRecord() {
         var _this = this;
@@ -430,7 +431,6 @@
       },
 
       ajaxUpdateRecord() {
-        console.log(this.record_id)
         var _this = this;
         this.loadingShow = true;
         this.$axios
@@ -439,6 +439,7 @@
             status: "done",
           })
           .then((res) => {
+            console.log(res.data)
             if (res.data) {
               _this.updateFlag = 1;
               _this.loadingShow = false;
@@ -637,12 +638,12 @@
             flag: 0,
             description: "",
           },
-          hand: {
+          wrist: {
             angle: "",
             flag: 0,
             description: "",
           },
-          arm: {
+          upperarm: {
             angle: "",
             flag: 0,
             description: "",
@@ -670,12 +671,12 @@
             flag: 0,
             description: "",
           },
-          hand: {
+          wrist: {
             angle: "",
             flag: 0,
             description: "",
           },
-          arm: {
+          upperarm: {
             angle: "",
             flag: 0,
             description: "",
@@ -710,53 +711,53 @@
         });
       },
 
-      //录音 iatRecorder初始化
-      init(iatRecorder) {
-        iatRecorder.onTextChange = (text) => {
-          let tempText = window.localStorage.getItem("temp_text")
-          /* text是每次识别后叠加的结果，需要去掉之前识别的内容进行判断 */
-          let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
-          let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
-          let pattern4 = /[\u67e5][\u770b][\u62a5][\u544a]/g;  //查看报告
-          let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
-          let temp = text.slice(tempText.length);
-          this.isTrue2 = pattern2.test(temp);
-          this.isTrue3 = pattern3.test(temp);
-          this.isTrue4 = pattern4.test(temp);
-          this.isTrue5 = pattern5.test(temp);
-          console.log(this.isTrue2, this.isTrue3, this.isTrue4, this.isTrue5)
-          if (this.isTrue2 && !(this.isTrue3) && !(this.isTrue4) && !(this.isTrue5)) { //停止训练
-            this.stopTrain();
-            window.localStorage.setItem("temp_text", text);
-            return
-          } else if (!(this.isTrue2) && this.isTrue3 && !(this.isTrue4) && !(this.isTrue5)) { //再次训练
-            this.startTrain();
-            window.localStorage.setItem("temp_text", text);
-            return
-          } else if (!(this.isTrue2) && !(this.isTrue3) && this.isTrue4 && !(this.isTrue5)) { //查看报告
-            this.ajaxUpdateRecord();
-            window.localStorage.setItem("temp_text", text);
-            return
-          } else if (!(this.isTrue2) && !(this.isTrue3) && !(this.isTrue4) && this.isTrue5) { //关闭报告
-            this.hideModalReport()
-            window.localStorage.setItem("temp_text", text);
-            return
-          } else {
-            window.localStorage.setItem("temp_text", text);
-            return
-          }
-        }
-      },
+      // //录音 iatRecorder初始化
+      // init(iatRecorder) {
+      //   iatRecorder.onTextChange = (text) => {
+      //     let tempText = window.localStorage.getItem("temp_text")
+      //     /* text是每次识别后叠加的结果，需要去掉之前识别的内容进行判断 */
+      //     let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
+      //     let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
+      //     let pattern4 = /[\u67e5][\u770b][\u62a5][\u544a]/g;  //查看报告
+      //     let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
+      //     let temp = text.slice(tempText.length);
+      //     this.isTrue2 = pattern2.test(temp);
+      //     this.isTrue3 = pattern3.test(temp);
+      //     this.isTrue4 = pattern4.test(temp);
+      //     this.isTrue5 = pattern5.test(temp);
+      //     console.log(this.isTrue2, this.isTrue3, this.isTrue4, this.isTrue5)
+      //     if (this.isTrue2 && !(this.isTrue3) && !(this.isTrue4) && !(this.isTrue5)) { //停止训练
+      //       this.stopTrain();
+      //       window.localStorage.setItem("temp_text", text);
+      //       return
+      //     } else if (!(this.isTrue2) && this.isTrue3 && !(this.isTrue4) && !(this.isTrue5)) { //再次训练
+      //       this.startTrain();
+      //       window.localStorage.setItem("temp_text", text);
+      //       return
+      //     } else if (!(this.isTrue2) && !(this.isTrue3) && this.isTrue4 && !(this.isTrue5)) { //查看报告
+      //       this.ajaxUpdateRecord();
+      //       window.localStorage.setItem("temp_text", text);
+      //       return
+      //     } else if (!(this.isTrue2) && !(this.isTrue3) && !(this.isTrue4) && this.isTrue5) { //关闭报告
+      //       this.hideModalReport()
+      //       window.localStorage.setItem("temp_text", text);
+      //       return
+      //     } else {
+      //       window.localStorage.setItem("temp_text", text);
+      //       return
+      //     }
+      //   }
+      // },
 
-      //开始录音
-      iatRecorderStart() {
-        iatRecorder.start()
-      },
+      // //开始录音
+      // iatRecorderStart() {
+      //   iatRecorder.start()
+      // },
 
-      //结束录音
-      iatRecorderStop() {
-        iatRecorder.stop()
-      },
+      // //结束录音
+      // iatRecorderStop() {
+      //   iatRecorder.stop()
+      // },
     },
   };
 </script>
@@ -796,7 +797,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    background: url('../static/img/images/reportBg.png') no-repeat center;
+    /* background: url('../static/img/images/reportBg.png') no-repeat center; */
     background-size: 100%;
   }
 

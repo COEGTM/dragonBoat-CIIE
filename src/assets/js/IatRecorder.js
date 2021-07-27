@@ -311,11 +311,13 @@ const IatRecorder = class {
                 }
                 // 将结果存储在resultTextTemp中
                 this.setResultText({
-                    resultTextTemp: this.resultText + str,
+                    resultTextTemp: str,
+                    // resultTextTemp: this.resultText + str,
                 })
             } else {
                 this.setResultText({
-                    resultText: this.resultText + str,
+                    resultText: str,
+                    // resultText: this.resultText + str,
                 })
             }
         }
