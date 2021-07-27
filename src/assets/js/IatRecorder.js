@@ -3,9 +3,9 @@ import TransWorker from './transcode.worker'
 
 // const transWorker = new TransWorker()
 
-const APPID = '3a0f9117'
-const API_SECRET = 'MDI1M2ZiYmMwNzk0M2VjNGZlZWY2OGQ1'
-const API_KEY = 'bc802d4f68f0c9a732eb31a74d7893f6'
+const APPID = '5b15bfe2'
+const API_SECRET = 'NDUyMjZjMzRiNmVmM2Q1NzkyYTA5ZWVl'
+const API_KEY = '1b7e4f178baf7c70a50802d95fcb5564'
 
 // const APPID = '410cb267'
 // const API_SECRET = 'M2YzYjhmY2U4YjdkMjY0Y2FlNzNkNjc2'

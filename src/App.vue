@@ -797,7 +797,7 @@
     width: 100%;
     height: 100%;
     position: relative;
-    /* background: url('../static/img/images/reportBg.png') no-repeat center; */
+    background: no-repeat center;
     background-size: 100%;
   }
 
