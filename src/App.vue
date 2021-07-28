@@ -150,10 +150,10 @@
         <a-row type="flex" justify="space-around">
           <!-- 划桨动作数据 -->
           <a-col :span="6" class="speed">
-            <p class="zqwdx speedNum">{{ report ? "":summaryData.score }}</p>
+            <p class="zqwdx speedNum">{{ summaryData.score }}</p>
             <div class="speedNum">
-              <span class="dzwcsj">{{ report ? "":summaryData.speed }}</span>
-              <span class="dzzlpgcj">{{ report ? "":summaryData.stability }}</span>
+              <span class="dzwcsj">{{ summaryData.speed }}</span>
+              <span class="dzzlpgcj">{{ summaryData.stability }}</span>
             </div>
           </a-col>
           <!-- 划桨动作数据 -->
@@ -302,12 +302,12 @@
             flag: 0,
             description: "",
           },
-          wrist: {//wrist
+          wrist: {
             angle: "",
             flag: 0,
             description: "",
           },
-          upperarm: {//upperarm
+          upperarm: {
             angle: "",
             flag: 0,
             description: "",
@@ -366,12 +366,6 @@
         timer_resetSummy: "",
         updateFlag: "",
         spinShow: false,
-
-        //语音指令判断
-        // isTrue2: false,
-        // isTrue3: false,
-        // isTrue4: false,
-        // isTrue5: false,
       };
     },
 
@@ -418,7 +412,7 @@
               }, 5000);
               _this.timer_resetSummy = setInterval(() => {
                 _this.ajaxSummaryReport();
-              }, 60000);
+              }, 30000);
               _this.visible = false;
               _this.confirmLoading = false;
             } else {
@@ -439,15 +433,14 @@
             status: "done",
           })
           .then((res) => {
-            console.log(res.data)
             if (res.data) {
               _this.updateFlag = 1;
               _this.loadingShow = false;
               _this.stopBtnTxt = "再次训练";
               clearInterval(_this.timer_reset);
               clearInterval(_this.timer_resetSummy);
-              _this.ajaxSummaryReport();
               _this.showModalReport();
+              _this.ajaxSummaryReport();
               _this.visible = false;
               _this.confirmLoading = false;
             } else {
@@ -500,18 +493,28 @@
       // 划桨动作数据请求
       ajaxSummaryReport() {
         var _this = this;
-        _this.spinShow = true;
+        // _this.spinShow = true;
+        if (_this.report === true) {
+          _this.spinShow = true;
+        }
         this.$axios
           .get(
             `${this.newIp}/report/${this.addRecordForm.athlete_id}/${this.record_id}/summary`
           )
           .then((res) => {
             if (res.data) {
+              // _this.summaryData = Object.assign({}, res.data);
               _this.summaryData = res.data;
-              _this.summaryData.stability = res.data.stability;
-              _this.summaryData.speed = res.data.speed;
-              _this.summaryData.score = res.data.score;
-              _this.spinShow = false;
+              // _this.summaryData.stability = res.data.stability;
+              // _this.summaryData.speed = res.data.speed;
+              // _this.summaryData.score = res.data.score;
+              _this.$set(_this.summaryData, 'stability', res.data.stability);
+              _this.$set(_this.summaryData, 'speed', res.data.speed);
+              _this.$set(_this.summaryData, 'score', res.data.score);
+              // _this.spinShow = false;
+              if (_this.spinShow === true) {
+                _this.spinShow = false;
+              }
             } else {
             }
           })
@@ -524,12 +527,6 @@
       startTrain() {
         this.ajaxAddRecord();
       },
-
-      // intoTrainPage() {
-      //   this.startTrain()
-      //   // this.init(iatRecorder)
-      //   // this.iatRecorderStart()
-      // },
 
       stopTrain() {
         clearInterval(this.timer_reset);
@@ -710,54 +707,6 @@
           description: this.errorInfo,
         });
       },
-
-      // //录音 iatRecorder初始化
-      // init(iatRecorder) {
-      //   iatRecorder.onTextChange = (text) => {
-      //     let tempText = window.localStorage.getItem("temp_text")
-      //     /* text是每次识别后叠加的结果，需要去掉之前识别的内容进行判断 */
-      //     let pattern2 = /[\u505c][\u6b62][\u8bad][\u7ec3]/g;  //停止训练
-      //     let pattern3 = /[\u518d][\u6b21][\u8bad][\u7ec3]/g;  //再次训练
-      //     let pattern4 = /[\u67e5][\u770b][\u62a5][\u544a]/g;  //查看报告
-      //     let pattern5 = /[\u5173][\u95ed][\u62a5][\u544a]/g;  //关闭报告
-      //     let temp = text.slice(tempText.length);
-      //     this.isTrue2 = pattern2.test(temp);
-      //     this.isTrue3 = pattern3.test(temp);
-      //     this.isTrue4 = pattern4.test(temp);
-      //     this.isTrue5 = pattern5.test(temp);
-      //     console.log(this.isTrue2, this.isTrue3, this.isTrue4, this.isTrue5)
-      //     if (this.isTrue2 && !(this.isTrue3) && !(this.isTrue4) && !(this.isTrue5)) { //停止训练
-      //       this.stopTrain();
-      //       window.localStorage.setItem("temp_text", text);
-      //       return
-      //     } else if (!(this.isTrue2) && this.isTrue3 && !(this.isTrue4) && !(this.isTrue5)) { //再次训练
-      //       this.startTrain();
-      //       window.localStorage.setItem("temp_text", text);
-      //       return
-      //     } else if (!(this.isTrue2) && !(this.isTrue3) && this.isTrue4 && !(this.isTrue5)) { //查看报告
-      //       this.ajaxUpdateRecord();
-      //       window.localStorage.setItem("temp_text", text);
-      //       return
-      //     } else if (!(this.isTrue2) && !(this.isTrue3) && !(this.isTrue4) && this.isTrue5) { //关闭报告
-      //       this.hideModalReport()
-      //       window.localStorage.setItem("temp_text", text);
-      //       return
-      //     } else {
-      //       window.localStorage.setItem("temp_text", text);
-      //       return
-      //     }
-      //   }
-      // },
-
-      // //开始录音
-      // iatRecorderStart() {
-      //   iatRecorder.start()
-      // },
-
-      // //结束录音
-      // iatRecorderStop() {
-      //   iatRecorder.stop()
-      // },
     },
   };
 </script>
