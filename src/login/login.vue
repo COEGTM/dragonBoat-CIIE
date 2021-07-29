@@ -87,7 +87,7 @@
     methods: {
       getIpPort() {
         this.newIp = "http://" + window.location.hostname + ":9600";
-        this.newIp = "http://" + '10.124.19.228:9600';
+        // this.newIp = "http://" + '10.124.19.228:9600';
         // this.newIp = backUrl;
       },
 
