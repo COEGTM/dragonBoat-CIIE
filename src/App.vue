@@ -552,6 +552,7 @@
       },
       hideModalReport() {
         this.report = false;
+        this.clearAll()
       },
       getathleteid(value) {  //在list页面点击具体的运动员之后需要保存的信息
         window.localStorage.setItem("athlete_id", value.athlete_id);
