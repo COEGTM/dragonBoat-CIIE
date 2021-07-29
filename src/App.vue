@@ -522,6 +522,9 @@
       },
 
       startTrain() {
+        if (this.report == true) {
+          this.hideModalReport();
+        }
         this.ajaxAddRecord();
       },
 
