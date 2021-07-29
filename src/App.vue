@@ -151,6 +151,7 @@
           <!-- 划桨动作数据 -->
           <a-col :span="6" class="speed">
             <p class="zqwdx speedNum">{{ summaryData.score }}</p>
+            <!-- <p class="zqwdx speedNum">{{ summaryData.score }}</p> -->
             <div class="speedNum">
               <span class="dzwcsj">{{ summaryData.speed }}</span>
               <span class="dzzlpgcj">{{ summaryData.stability }}</span>
@@ -388,11 +389,11 @@
 
     methods: {
       getIpPort() {
-        // this.newIp = "http://" + window.location.hostname + ":9600";
-        // this.videoFeed = "http://" + window.location.hostname
+        this.newIp = "http://" + window.location.hostname + ":9600";
+        this.videoFeed = "http://" + window.location.hostname
         // this.newIp =  "http://"+'10.124.19.228:9600';
-        this.newIp = backUrl;
-        this.videoFeed = "http://" + "10.124.19.228";
+        // this.newIp = backUrl;
+        // this.videoFeed = "http://" + "10.124.19.228";
       },
       ajaxAddRecord() {
         var _this = this;
@@ -460,7 +461,7 @@
             `${this.newIp}/report/${this.addRecordForm.athlete_id}/${this.record_id}/periodic/front_end`
           )
           .then((res) => {
-            if (res.data) {
+            if (res.data && JSON.stringify(res.data) != "{}") {
               _this.frontPosture = res.data;
             } else {
             }
@@ -479,7 +480,7 @@
             `${this.newIp}/report/${this.addRecordForm.athlete_id}/${this.record_id}/periodic/far_end`
           )
           .then((res) => {
-            if (res.data) {
+            if (res.data && JSON.stringify(res.data) != "{}") {
               _this.backPosture = res.data;
             } else {
             }
@@ -503,14 +504,10 @@
           )
           .then((res) => {
             if (res.data) {
-              // _this.summaryData = Object.assign({}, res.data);
               _this.summaryData = res.data;
-              // _this.summaryData.stability = res.data.stability;
-              // _this.summaryData.speed = res.data.speed;
-              // _this.summaryData.score = res.data.score;
-              _this.$set(_this.summaryData, 'stability', res.data.stability);
-              _this.$set(_this.summaryData, 'speed', res.data.speed);
-              _this.$set(_this.summaryData, 'score', res.data.score);
+              _this.summaryData.stability = res.data.stability;
+              _this.summaryData.speed = res.data.speed;
+              _this.summaryData.score = res.data.score;
               // _this.spinShow = false;
               if (_this.spinShow === true) {
                 _this.spinShow = false;
