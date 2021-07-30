@@ -72,7 +72,10 @@
         countDownStyle: {
           display: "none"
         },
-        // tempText: ''
+
+        isTrainStart: false,
+        // isTrainStop: false,
+        pageTag: 'login'
       };
     },
     created() {
@@ -152,30 +155,37 @@
           let isTrue3 = pattern3.test(text);
           let isTrue4 = pattern4.test(text);
           let isTrue5 = pattern5.test(text);
-          if (isTrue1 && !(isTrue2) && !(isTrue3) && !(isTrue4) && !(isTrue5)) {  //开始倒计时跳转
-            // this.tempText = text;
-            this.iatRecorderStop();
-            this.countDownShow();
-            this.timer_clock = setInterval(this.doLoop, 1000);
-            return
+          if (this.pageTag === "login" && isTrue1 && !(isTrue2) && !(isTrue3) && !(isTrue4) && !(isTrue5)) {  //开始倒计时跳转
+            if (this.isTrainStart === false) {
+              this.isTrainStart = true;
+              this.iatRecorderStop();
+              this.countDownShow();
+              this.timer_clock = setInterval(this.doLoop, 1000);
+              return
+            }
           } else if ((!isTrue1) && isTrue2 && !(isTrue3) && !(isTrue4) && !(isTrue5)) {  //停止训练
-            this.$parent.stopTrain()
-            // this.tempText = text;
-            return
+            if (this.isTrainStart === true) {
+              this.isTrainStart = false;
+              this.$parent.stopTrain()
+              return
+            }
           } else if ((!isTrue1) && (!isTrue2) && isTrue3 && !(isTrue4) && !(isTrue5)) {  //再次训练
-            this.$parent.startTrain();
-            // this.tempText = text;
-            return
+            if (this.isTrainStart === false) {
+              this.$parent.startTrain();
+              this.isTrainStart = true;
+              return
+            }
           } else if ((!isTrue1) && (!isTrue2) && !(isTrue3) && isTrue4 && !(isTrue5)) {  //查看报告
-            this.$parent.ajaxUpdateRecord();
-            // this.tempText = text;
-            return
+            if (this.isTrainStart === false) {
+              this.$parent.ajaxUpdateRecord();
+              return
+            }
           } else if ((!isTrue1) && (!isTrue2) && !(isTrue3) && !(isTrue4) && isTrue5) {  //关闭报告
-            this.$parent.hideModalReport()
-            // this.tempText = text;
-            return
+            if (this.isTrainStart === false) {
+              this.$parent.hideModalReport()
+              return
+            }
           } else {
-            // this.tempText = text;
             return
           }
         }
