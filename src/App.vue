@@ -49,6 +49,12 @@
       </div>
       <!-- 个人战绩 -->
 
+      <!-- 即将停止/再次训练倒计时 -->
+      <a-modal v-model="isCountdownVisible" class="countDown" :footer="null" :closable="false">
+        <div class="countDown-box">{{countDownText}}</div>
+      </a-modal>
+      <!-- 即将停止/再次训练倒计时 -->
+
       <!-- board -->
       <div style="margin: 0 20px">
         <a-row>
@@ -367,6 +373,10 @@
         timer_resetSummy: "",
         updateFlag: "",
         spinShow: false,
+
+        isCountdownVisible: false,
+        countDownText: "",
+        trainStatus: true,//在训练状态
       };
     },
 
@@ -389,11 +399,12 @@
 
     methods: {
       getIpPort() {
-        this.newIp = "http://" + window.location.hostname + ":9600";
-        this.videoFeed = "http://" + window.location.hostname
+        // this.newIp = "http://" + window.location.hostname + ":9600";
+        // this.videoFeed = "http://" + window.location.hostname
         // this.newIp =  "http://"+'10.124.19.228:9600';
-        // this.newIp = backUrl;
         // this.videoFeed = "http://" + "10.124.19.228";
+        this.newIp = "http://" + '192.168.8.100:9600';
+        this.videoFeed = "http://" + "192.168.8.100";
       },
       ajaxAddRecord() {
         var _this = this;
@@ -440,7 +451,7 @@
               _this.stopBtnTxt = "再次训练";
               clearInterval(_this.timer_reset);
               clearInterval(_this.timer_resetSummy);
-              _this.showModalReport();
+              // _this.showModalReport();
               _this.ajaxSummaryReport();
               _this.visible = false;
               _this.confirmLoading = false;
@@ -525,6 +536,9 @@
         if (this.report == true) {
           this.hideModalReport();
         }
+        if (this.trainStatus == false) {
+          this.showCountDownModal();
+        }
         this.ajaxAddRecord();
       },
 
@@ -532,6 +546,7 @@
         clearInterval(this.timer_reset);
         clearInterval(this.timer_resetSummy);
         this.stopBtnTxt = "再次训练";
+        this.showCountDownModal();
         this.clearAll();
         this.ajaxUpdateRecord();
       },
@@ -708,6 +723,28 @@
           description: this.errorInfo,
         });
       },
+      showCountDownModal() {
+        this.isCountdownVisible = true;
+        this.countDown();
+      },
+      countDown() {
+        let secondsToGo = 3;
+        this.countDownText = this.trainStatus ? "即将停止训练" : "即将再次训练";
+
+        const interval = setInterval(() => {
+          if (secondsToGo > 0) {
+            this.countDownText = secondsToGo;
+          } else {
+            clearInterval(interval);
+            this.isCountdownVisible = false;
+            if (this.trainStatus == true) {
+              this.showModalReport();
+            }
+            this.trainStatus = !this.trainStatus;
+          }
+          secondsToGo -= 1;
+        }, 1000);
+      },
     },
   };
 </script>
@@ -789,4 +826,26 @@
   }
 
   /* report mask --- end */
+
+  /* countDown mask --- start */
+  .countDown .ant-modal {
+    width: 50% !important;
+  }
+
+  .countDown .ant-modal-mask {
+    background-color: rgba(1, 8, 39, 0.35);
+  }
+
+  .countDown .ant-modal-content {
+    height: 200px;
+    color: rgba(255, 255, 255 0.45);
+    text-align: center;
+    background: rgba(76, 104, 117, 0.2);
+  }
+
+  .countDown .ant-modal-content .ant-modal-body {
+    font-size: 100px;
+  }
+
+  /* countDown mask --- end */
 </style>
