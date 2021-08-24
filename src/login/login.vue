@@ -89,9 +89,8 @@
     },
     methods: {
       getIpPort() {
-        // this.newIp = "http://" + window.location.hostname + ":9600";
-        this.newIp = "http://" + '192.168.8.100:9600';
-        // this.newIp = backUrl;
+        this.newIp = "http://" + window.location.hostname + ":9600";
+        // this.newIp = "http://" + '10.124.19.228:9600';
       },
 
       onPageChange(pageIndex, pageSize) {
@@ -166,12 +165,14 @@
           } else if ((!isTrue1) && isTrue2 && !(isTrue3) && !(isTrue4) && !(isTrue5)) {  //停止训练
             if (this.isTrainStart === true) {
               this.isTrainStart = false;
-              this.$parent.stopTrain()
+              // this.$parent.stopTrain()
+              this.$parent.showCountDownModal()
               return
             }
           } else if ((!isTrue1) && (!isTrue2) && isTrue3 && !(isTrue4) && !(isTrue5)) {  //再次训练
             if (this.isTrainStart === false) {
-              this.$parent.startTrain();
+              // this.$parent.startTrain();
+              this.$parent.showCountDownModal()
               this.isTrainStart = true;
               return
             }

@@ -59,8 +59,10 @@
       <div style="margin: 0 20px">
         <a-row>
           <a-col class="head">
-            <a-button class="stopTrainBtn" @click="stopTrain()">停止训练</a-button>
-            <a-button class="stopTrainBtn" @click="startTrain()" v-if="stopBtnTxt == '再次训练'">再次训练</a-button>
+            <!-- <a-button class="stopTrainBtn" @click="stopTrain()">停止训练</a-button>
+            <a-button class="stopTrainBtn" @click="startTrain()" v-if="stopBtnTxt == '再次训练'">再次训练</a-button> -->
+            <a-button class="stopTrainBtn" @click="showCountDownModal()">停止训练</a-button>
+            <a-button class="stopTrainBtn" @click="showCountDownModal()" v-if="stopBtnTxt == '再次训练'">再次训练</a-button>
             <a-button class="reportBtn" :disabled="stopBtnTxt !== '再次训练'" @click="ajaxUpdateRecord()">查看报告</a-button>
           </a-col>
         </a-row>
@@ -399,12 +401,10 @@
 
     methods: {
       getIpPort() {
-        // this.newIp = "http://" + window.location.hostname + ":9600";
-        // this.videoFeed = "http://" + window.location.hostname
-        // this.newIp =  "http://"+'10.124.19.228:9600';
+        this.newIp = "http://" + window.location.hostname + ":9600";
+        this.videoFeed = "http://" + window.location.hostname
+        // this.newIp = "http://" + '10.124.19.228:9600';
         // this.videoFeed = "http://" + "10.124.19.228";
-        this.newIp = "http://" + '192.168.8.100:9600';
-        this.videoFeed = "http://" + "192.168.8.100";
       },
       ajaxAddRecord() {
         var _this = this;
@@ -451,7 +451,7 @@
               _this.stopBtnTxt = "再次训练";
               clearInterval(_this.timer_reset);
               clearInterval(_this.timer_resetSummy);
-              // _this.showModalReport();
+              _this.showModalReport();
               _this.ajaxSummaryReport();
               _this.visible = false;
               _this.confirmLoading = false;
@@ -536,9 +536,6 @@
         if (this.report == true) {
           this.hideModalReport();
         }
-        if (this.trainStatus == false) {
-          this.showCountDownModal();
-        }
         this.ajaxAddRecord();
       },
 
@@ -546,7 +543,6 @@
         clearInterval(this.timer_reset);
         clearInterval(this.timer_resetSummy);
         this.stopBtnTxt = "再次训练";
-        this.showCountDownModal();
         this.clearAll();
         this.ajaxUpdateRecord();
       },
@@ -724,6 +720,9 @@
         });
       },
       showCountDownModal() {
+        if (this.report == true) {
+          this.hideModalReport();
+        }
         this.isCountdownVisible = true;
         this.countDown();
       },
@@ -737,10 +736,16 @@
           } else {
             clearInterval(interval);
             this.isCountdownVisible = false;
-            if (this.trainStatus == true) {
-              this.showModalReport();
-            }
-            this.trainStatus = !this.trainStatus;
+            setTimeout(() => {
+              if (this.trainStatus == true) {//如果是在训练状态
+                this.stopTrain()
+                this.trainStatus = false
+              } else {//如果是在停止状态
+                this.startTrain()
+                this.trainStatus = true
+              }
+              // this.trainStatus = !this.trainStatus;
+            }, 500)
           }
           secondsToGo -= 1;
         }, 1000);
@@ -830,17 +835,19 @@
   /* countDown mask --- start */
   .countDown .ant-modal {
     width: 50% !important;
+    position: relative;
+    top: 35%;
   }
 
   .countDown .ant-modal-mask {
-    background-color: rgba(1, 8, 39, 0.35);
+    background-color: rgba(24, 34, 83, 0.3);
   }
 
   .countDown .ant-modal-content {
     height: 200px;
-    color: rgba(255, 255, 255 0.45);
+    color: rgba(234, 249, 252, 0.9);
     text-align: center;
-    background: rgba(76, 104, 117, 0.2);
+    background: rgba(19, 72, 139, 0.15);
   }
 
   .countDown .ant-modal-content .ant-modal-body {
